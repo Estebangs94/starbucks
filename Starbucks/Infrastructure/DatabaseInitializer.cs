@@ -1,8 +1,6 @@
-using System.Runtime.InteropServices;
 using Domain.Entities;
 using Domain.Enums;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -75,7 +73,7 @@ public class StarbucksDbContextInitializer
                 Description = "Espresso shots topped with hot milk foam",
                 Price = 3.99m,
                 PreparationTime = 5,
-                ItemsIngredients = new List<ItemIngredients>
+                Ingredients = new List<ItemIngredients>
                 {
                     new()
                     {
@@ -85,7 +83,7 @@ public class StarbucksDbContextInitializer
                             Stock = 100000,
                             Unit = UnitType.Milliliters
                         },
-                        IngredientQuantity = 2
+                        IngredientQuantity = 200
                     },
                     new()
                     {
@@ -95,7 +93,79 @@ public class StarbucksDbContextInitializer
                             Stock = 100000,
                             Unit = UnitType.Milliliters
                         },
-                        IngredientQuantity = 2
+                        IngredientQuantity = 200
+                    }
+                }
+            });
+
+            _context.Items.Add(new Item
+            {
+                Name = "Latte",
+                Description = "Espresso shots topped with steamed milk",
+                Price = 2.99m,
+                PreparationTime = 3,
+                Ingredients = new List<ItemIngredients>
+                {
+                    new()
+                    {
+                        Ingredient = new Ingredient
+                        {
+                            Name = "Espresso",
+                            Stock = 100000,
+                            Unit = UnitType.Milliliters
+                        },
+                        IngredientQuantity = 100
+                    },
+                    new()
+                    {
+                        Ingredient = new Ingredient
+                        {
+                            Name = "Milk",
+                            Stock = 100000,
+                            Unit = UnitType.Milliliters
+                        },
+                        IngredientQuantity = 200
+                    }
+                }
+            });
+
+            _context.Items.Add(new Item
+            {
+                Name = "Strawberry Frappuccino",
+                Description = "Strawberry juice, milk, and ice blended together",
+                Price = 4.99m,
+                PreparationTime = 10,
+                Ingredients = new List<ItemIngredients>
+                {
+                    new()
+                    {
+                        Ingredient = new Ingredient
+                        {
+                            Name = "Strawberry Juice",
+                            Stock = 100000,
+                            Unit = UnitType.Milliliters
+                        },
+                        IngredientQuantity = 200
+                    },
+                    new()
+                    {
+                        Ingredient = new Ingredient
+                        {
+                            Name = "Milk",
+                            Stock = 100000,
+                            Unit = UnitType.Milliliters
+                        },
+                        IngredientQuantity = 200
+                    },
+                    new()
+                    {
+                        Ingredient = new Ingredient
+                        {
+                            Name = "Ice",
+                            Stock = 100000,
+                            Unit = UnitType.Milliliters
+                        },
+                        IngredientQuantity = 200
                     }
                 }
             });

@@ -1,10 +1,11 @@
 using System.Reflection;
+using Application;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
 
-public class StarbucksDbContext : DbContext
+public class StarbucksDbContext : DbContext, IStarbucksDbContext
 {
     public StarbucksDbContext(DbContextOptions<StarbucksDbContext> options) : base(options) 
     {
