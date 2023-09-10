@@ -1,0 +1,31 @@
+{
+	"info": {
+		"_postman_id": "9b480374-06db-4717-9853-fbcb9c442e60",
+		"name": "Starbucks",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5528532",
+		"_collection_link": "https://universal-desert-429101.postman.co/workspace/My-Workspace~93442b46-74c1-40ca-8069-3938cbe9fa82/collection/5528532-9b480374-06db-4717-9853-fbcb9c442e60?action=share&source=collection_link&creator=5528532"
+	},
+	"item": [
+		{
+			"name": "https://localhost:7115/api/items",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7115/api/items",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7115",
+					"path": [
+						"api",
+						"items"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
