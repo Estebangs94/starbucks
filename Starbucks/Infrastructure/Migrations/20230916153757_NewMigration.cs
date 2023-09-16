@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace Infrastructure.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class NewMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,11 +14,11 @@ namespace Infrastructure.Migrations
                 name: "Ingredients",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Stock = table.Column<int>(type: "INTEGER", nullable: false),
-                    Unit = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Stock = table.Column<int>(type: "integer", nullable: false),
+                    Unit = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -27,12 +29,12 @@ namespace Infrastructure.Migrations
                 name: "Items",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
-                    Price = table.Column<decimal>(type: "TEXT", nullable: false),
-                    PreparationTime = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Price = table.Column<decimal>(type: "numeric", nullable: false),
+                    PreparationTime = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -43,12 +45,12 @@ namespace Infrastructure.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    CustomerName = table.Column<string>(type: "TEXT", nullable: false),
-                    CustomerAddress = table.Column<string>(type: "TEXT", nullable: false),
-                    CustomerEmail = table.Column<string>(type: "TEXT", nullable: false),
-                    CustomerPhoneNumber = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    OrderDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Taxes = table.Column<decimal>(type: "numeric", nullable: false),
+                    SubTotal = table.Column<decimal>(type: "numeric", nullable: false),
+                    Total = table.Column<decimal>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,11 +61,11 @@ namespace Infrastructure.Migrations
                 name: "ItemsIngredients",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ItemId = table.Column<int>(type: "INTEGER", nullable: false),
-                    IngredientId = table.Column<int>(type: "INTEGER", nullable: false),
-                    IngredientQuantity = table.Column<decimal>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ItemId = table.Column<int>(type: "integer", nullable: false),
+                    IngredientId = table.Column<int>(type: "integer", nullable: false),
+                    IngredientQuantity = table.Column<decimal>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,30 +88,30 @@ namespace Infrastructure.Migrations
                 name: "ItemOrder",
                 columns: table => new
                 {
-                    ItemOrdersId = table.Column<int>(type: "INTEGER", nullable: false),
-                    OrderItemsId = table.Column<int>(type: "INTEGER", nullable: false)
+                    ItemsId = table.Column<int>(type: "integer", nullable: false),
+                    OrdersId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemOrder", x => new { x.ItemOrdersId, x.OrderItemsId });
+                    table.PrimaryKey("PK_ItemOrder", x => new { x.ItemsId, x.OrdersId });
                     table.ForeignKey(
-                        name: "FK_ItemOrder_Items_OrderItemsId",
-                        column: x => x.OrderItemsId,
+                        name: "FK_ItemOrder_Items_ItemsId",
+                        column: x => x.ItemsId,
                         principalTable: "Items",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ItemOrder_Orders_ItemOrdersId",
-                        column: x => x.ItemOrdersId,
+                        name: "FK_ItemOrder_Orders_OrdersId",
+                        column: x => x.OrdersId,
                         principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItemOrder_OrderItemsId",
+                name: "IX_ItemOrder_OrdersId",
                 table: "ItemOrder",
-                column: "OrderItemsId");
+                column: "OrdersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ItemsIngredients_IngredientId",

@@ -9,9 +9,6 @@ public class StarbucksDbContext : DbContext, IStarbucksDbContext
 {
     public StarbucksDbContext(DbContextOptions<StarbucksDbContext> options) : base(options) 
     {
-        var folder = Environment.SpecialFolder.LocalApplicationData;
-        var path = Environment.GetFolderPath(folder);
-        DbPath = Path.Join(path, "starbucks.db");
     }
 
     public DbSet<Item> Items { get; set; }
@@ -19,11 +16,9 @@ public class StarbucksDbContext : DbContext, IStarbucksDbContext
     public DbSet<Ingredient> Ingredients { get; set; }
     public DbSet<ItemIngredients> ItemsIngredients { get; set; }
 
-    public string DbPath { get; }
-
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-        options.UseSqlite($"Data Source={DbPath}");
+        options.UseNpgsql(@"Host=localhost;Username=postgres;Password=postgres;Database=Starbucks");
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
