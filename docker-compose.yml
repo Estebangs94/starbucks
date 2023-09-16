@@ -1,0 +1,29 @@
+services:
+
+  starbucks:
+    build:
+      context: ./Starbucks
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+    ports:
+      - '8080:80'
+    networks:
+      - test-network
+
+  postgres:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes: 
+      - ./data:/var/lib/postgresql/data
+    networks:
+      - test-network
+
+networks:
+  test-network:
+    driver: bridge
