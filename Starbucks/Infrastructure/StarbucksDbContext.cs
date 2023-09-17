@@ -16,11 +16,6 @@ public class StarbucksDbContext : DbContext, IStarbucksDbContext
     public DbSet<Ingredient> Ingredients { get; set; }
     public DbSet<ItemIngredients> ItemsIngredients { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
-    {
-        options.UseNpgsql(@"Host=localhost;Username=postgres;Password=postgres;Database=Starbucks");
-    }
-
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

@@ -10,6 +10,8 @@ services:
       - '8080:80'
     networks:
       - test-network
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
 
   postgres:
     image: postgres:14.1-alpine
