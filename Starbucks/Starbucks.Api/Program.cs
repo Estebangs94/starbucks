@@ -1,5 +1,6 @@
 using Application;
 using Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,13 +16,24 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 
+using (var serviceScope = app.Services
+    .GetRequiredService<IServiceScopeFactory>()
+    .CreateScope())
+{
+    using (var context = serviceScope.ServiceProvider.GetService<StarbucksDbContext>())
+    {
+        context!.Database.Migrate();
+    }
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    await app.InitializeDatabaseAsync();
 }
+
+await app.InitializeDatabaseAsync(); //this should only be used for local development
 
 app.UseHttpsRedirection();
 

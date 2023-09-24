@@ -1,11 +1,12 @@
 services:
-
   starbucks:
     build:
       context: ./Starbucks
       dockerfile: Dockerfile
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+        restart: true
     ports:
       - '8080:80'
     networks:
@@ -15,7 +16,6 @@ services:
 
   postgres:
     image: postgres:14.1-alpine
-    restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -25,6 +25,12 @@ services:
       - ./data:/var/lib/postgresql/data
     networks:
       - test-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
+      interval: 10s
+      timeout: 10s
+      start_period: 30s
+      retries: 3
 
 networks:
   test-network:
